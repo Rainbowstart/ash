@@ -1,0 +1,99 @@
+#Actuator配置开放所有端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+---
+#eureka1 配置
+server:
+  port: 8001
+
+spring:
+  profiles: eureka1
+  application:
+    #配置服务名
+    name: eureka1
+
+#eureka配置
+eureka:
+  client:
+#    是否将自己注册到eureka server
+    register-with-eureka: true
+#    避免eureka查找服务列表
+    fetch-registry: false
+    service-url:
+      defaultZone: http://118.25.215.105:8001/eureka/,http://118.25.215.105:8002/eureka/,http://118.25.215.105:8003/eureka/
+  server:
+    #主动失效时间
+    eviction-interval-timer-in-ms: 30000
+    registry-sync-retry-wait-ms: 500
+    a-s-g-cache-expiry-timeout-ms: 60000
+    peer-eureka-nodes-update-interval-ms: 15000
+    renewal-threshold-update-interval-ms: 300000
+#    关闭保护机制，尽可能提出挂掉的服务节点
+    enable-self-preservation: false
+
+---
+#eureka2 配置
+server:
+  port: 8002
+
+spring:
+  profiles: eureka2
+  application:
+    #配置服务名
+    name: eureka2
+
+#eureka配置
+eureka:
+  client:
+#    是否将自己注册到eureka server
+    register-with-eureka: true
+#    避免eureka查找服务列表
+    fetch-registry: false
+    service-url:
+      defaultZone: http://118.25.215.105:8001/eureka/,http://118.25.215.105:8002/eureka/,http://118.25.215.105:8003/eureka/
+  server:
+    #主动失效时间
+    eviction-interval-timer-in-ms: 30000
+    registry-sync-retry-wait-ms: 500
+    a-s-g-cache-expiry-timeout-ms: 60000
+    peer-eureka-nodes-update-interval-ms: 15000
+    renewal-threshold-update-interval-ms: 300000
+#    关闭保护机制，尽可能提出挂掉的服务节点
+    enable-self-preservation: false
+
+---
+#eureka3 配置
+server:
+  port: 8003
+
+spring:
+  profiles: eureka3
+  application:
+    #配置服务名
+    name: eureka3
+
+#eureka配置
+eureka:
+  client:
+#    是否将自己注册到eureka server
+    register-with-eureka: true
+#    避免eureka查找服务列表
+    fetch-registry: false
+    service-url:
+      defaultZone: http://118.25.215.105:8001/eureka/,http://118.25.215.105:8002/eureka/,http://118.25.215.105:8003/eureka/
+  server:
+    #主动失效时间
+    eviction-interval-timer-in-ms: 30000
+    registry-sync-retry-wait-ms: 500
+    a-s-g-cache-expiry-timeout-ms: 60000
+    peer-eureka-nodes-update-interval-ms: 15000
+    renewal-threshold-update-interval-ms: 300000
+#    关闭保护机制，尽可能提出挂掉的服务节点
+    enable-self-preservation: false

@@ -1,0 +1,118 @@
+#配置端口号
+server:
+  port: 8084
+
+spring:
+  application:
+    #配置服务名
+    name: zuul
+  profiles:
+    active: sit
+  # zipkin 配置
+  zipkin:
+    base-url: http://118.25.215.105:9411/ # zipkin服务器的地址
+    sender:
+      type: web  # 设置使用http的方式传输数据
+  # sleuth 配置
+  sleuth:
+    sampler:
+      probability: 1 # 设置抽样采集为100%，默认为0.1，即10%
+
+#Actuator配置开放所有端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# Zuul 配置
+zuul:
+  # 使⽤'*'可忽略所有微服务
+  # 通过此配置使得只有通过 routes 配置的路由才生效，更安全
+#  ignored-services: service-a,service-b
+  ignored-services: '*'
+  # 路由前缀，把 /api/service-a/1 映射到 /service-a/api/1
+#  prefix: /api
+#  strip-prefix: false
+  routes:
+    # 配置 service-a 服务的 访问路径为 /service-a/**
+#    service-a: /service-a/**
+    # 给路由⼀个名称，可以任意起名
+    # 通过服务名配置路由
+    service-a:
+      service-id: service-a # 指定服务名
+      path: /service-a/** # 服务名对应的路径
+    # feign-demo路由
+    feign-demo:
+      service-id: feign-demo # 指定服务名
+      path: /feign-demo/** # 服务名对应的路径
+
+    # 通过 URL 配置路由
+    service-b:
+#      url: http:127.0.0.1:8081 # 指定的url
+      service-id: service-b
+      path: /service-b/** # url对应的路径
+  # AuthFilter 拦截器开关
+  AuthFilter:
+    pre:
+      disable: true
+
+# 禁⽤掉ribbon的eureka使⽤
+#ribbon:
+#  eureka:
+#    # 详⻅：http://cloud.spring.io/spring- cloud-static/Camden.SR4/#_example_disable_eureka_use_in_ribbon
+#    enabled: false
+#
+## 把 service-b 这个服务名与 IP 进行映射
+#service-b:
+#  ribbon:
+#    listOfServers: localhost:8081
+
+# netflix ⽇志
+logging:
+  level:
+    com.netflix: DEBUG
+
+---
+#本地/测试服配置
+spring:
+  profiles: sit
+
+#eureka配置
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://118.25.215.105:8001/eureka/,http://118.25.215.105:8002/eureka/,http://118.25.215.105:8003/eureka/  #eureka 集群地址
+      defaultZone: http://eureka.didispace.com/eureka
+    #间隔多少秒去服务端拉去注册信息
+    registry-fetch-interval-seconds: 10
+  instance:
+    #发送心跳给server端频率
+    lease-renewal-interval-in-seconds: 30
+    #健康检查地址
+    health-check-url-path: /actuator/health
+    prefer-ip-address: true
+
+---
+
+#正式服配置
+spring:
+  profiles: prod
+
+#eureka配置
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://118.25.215.105:8001/eureka/,http://118.25.215.105:8002/eureka/,http://118.25.215.105:8003/eureka/  #eureka 集群地址
+      defaultZone: http://eureka.didispace.com/eureka
+    #间隔多少秒去服务端拉去注册信息
+    registry-fetch-interval-seconds: 10
+  instance:
+    #发送心跳给server端频率
+    lease-renewal-interval-in-seconds: 30
+    #健康检查地址
+    health-check-url-path: /actuator/health
+    prefer-ip-address: true

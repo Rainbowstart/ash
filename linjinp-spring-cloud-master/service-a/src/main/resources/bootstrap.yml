@@ -1,0 +1,22 @@
+#本地/测试服配置
+spring:
+  profiles: sit
+  # config client 配置
+  cloud:
+    config:
+      # name: microservicecloud-config-dept-client #需要从github上读取的资源名称，注意没有yml后缀名
+      uri: http://127.0.0.1:8085/  # spring-cloud-config 服务地址
+      profile: sit #配置项环境
+      label: master # 配置在 git 上对应的分支，默认为 master
+
+---
+
+#正式服配置
+spring:
+  profiles: prod
+  # config client 配置
+  cloud:
+    config:
+      uri: http://127.0.0.1:8085/  # spring-cloud-config 服务地址
+      profile: prod #配置项环境
+      label: master # 配置在 git 上对应的分支，默认为 master

@@ -1,0 +1,68 @@
+#配置端口号
+server:
+  port: 8085
+
+spring:
+  application:
+    #配置服务名
+    name: config-server
+  profiles:
+    active: sit
+
+  # 配置中心配置
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/linjinp/my-cloud-config.git # git 仓库路径，这里用的是 gitee
+
+#Actuator配置开放所有端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+---
+#本地/测试服配置
+spring:
+  profiles: sit
+
+#eureka配置
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://118.25.215.105:8001/eureka/,http://118.25.215.105:8002/eureka/,http://118.25.215.105:8003/eureka/  #eureka 集群地址
+      defaultZone: http://eureka.didispace.com/eureka
+    #间隔多少秒去服务端拉去注册信息
+    registry-fetch-interval-seconds: 10
+  instance:
+    #发送心跳给server端频率
+    lease-renewal-interval-in-seconds: 30
+    #健康检查地址
+    health-check-url-path: /actuator/health
+    prefer-ip-address: true
+
+---
+
+#正式服配置
+spring:
+  profiles: prod
+
+#eureka配置
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://118.25.215.105:8001/eureka/,http://118.25.215.105:8002/eureka/,http://118.25.215.105:8003/eureka/  #eureka 集群地址
+      defaultZone: http://eureka.didispace.com/eureka
+    #间隔多少秒去服务端拉去注册信息
+    registry-fetch-interval-seconds: 10
+  instance:
+    #发送心跳给server端频率
+    lease-renewal-interval-in-seconds: 30
+    #健康检查地址
+    health-check-url-path: /actuator/health
+    prefer-ip-address: true

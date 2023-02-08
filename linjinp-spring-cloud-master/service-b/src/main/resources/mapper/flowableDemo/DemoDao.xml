@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springcloud.flowableDemo.daoDemoDao" >
+    <resultMap id="BaseResultMap" type="com.springcloud.flowableDemo.entity.Role" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="role_number" property="roleNumber" jdbcType="VARCHAR" />
+        <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+        <result column="insert_time" property="insertTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="is_use" property="isUse" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+      id, role_number, role_name, insert_time, update_time, is_use, status
+    </sql>
+
+    <select id="getRoleDemo" resultType="hashMap" >
+        select
+        <include refid="Base_Column_List" />
+        from m_role_demo
+        order by role_number asc
+    </select>
+
+    <select id="getRoleListByIdsDemo" resultType="hashMap" >
+        <if test="idList != null and idList.size() > 0">
+            select
+            <include refid="Base_Column_List" />
+            from m_role_demo
+            where
+            id in (
+                <foreach collection="idList" item="item" index="index" separator=",">
+                    #{item}
+                </foreach>
+            )
+            order by role_number asc
+        </if>
+    </select>
+
+
+    <update id="updateRoleDemo" parameterType="com.springcloud.flowableDemo.entity.Role" >
+        update m_role_demo
+        <set >
+            <if test="roleNumber != null" >
+                role_number = #{roleNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="roleName != null" >
+                role_name = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="insertTime != null" >
+                insert_time = #{insertTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isUse != null" >
+                is_use = #{isUse,jdbcType=INTEGER},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springcloud.flowableDemo.dao.UserGroupPermissionDao" >
+
+    <select id="getIdByGroup" resultType="String" >
+        SELECT a.username
+        FROM m_user a
+        LEFT JOIN k_user_group b ON a.username = b.username
+        LEFT JOIN m_group c ON b.group_id = c.id
+        WHERE
+        a.is_use = 1
+        AND c.is_use = 1
+        AND c.id = #{groupId}
+    </select>
+
+
+</mapper>

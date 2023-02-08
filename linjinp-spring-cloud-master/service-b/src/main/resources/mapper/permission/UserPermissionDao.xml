@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springcloud.flowableDemo.dao.UserPermissionDao">
+
+    <select id="getUserGroup" resultType="com.springcloud.flowableDemo.entity.Group" >
+        select
+        b.id, b.group_name groupName, b.content, b.is_use isUse
+        from k_user_group a
+        left join m_group b on a.group_id = b.id
+        where
+        a.username = #{username}
+        order by b.id asc
+    </select>
+
+</mapper>
